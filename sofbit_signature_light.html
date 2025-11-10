@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sofbit – Email Signature Builder (Plain HTML)</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --brand-bg: #ffffff;
+      --grad-top: #00b4d8;
+      --grad-bottom: #4f46e5;
+      --text: #0f172a;
+      --text-sub: #334155;
+      --blue: #2563eb;
+      --sky: #0ea5e9;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:24px; background:var(--bg); font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 22px; margin: 0 0 16px; }
+
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+    .panel { background: #fff; border:1px solid rgba(0,0,0,.08); border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.06); }
+    .panel .hd { padding: 14px 16px; border-bottom: 1px solid rgba(15,23,42,.08); font-weight: 600; }
+    .panel .bd { padding: 16px; }
+
+    label { display:block; font-size: 12px; color:#334155; margin: 6px 0 6px; }
+    input[type="text"], input[type="url"], textarea, input[type="color"] { width:100%; border:1px solid rgba(0,0,0,.15); border-radius: 10px; padding:10px 12px; font-size:14px; outline:none; background:#fff; }
+    textarea { resize: vertical; }
+
+    .row { display:grid; grid-template-columns:1fr; gap: 12px; }
+    @media (min-width:700px) { .row.two { grid-template-columns:1fr 1fr; } .row.three { grid-template-columns:1fr 1fr 1fr; } }
+
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius: 12px; border:1px solid rgba(0,0,0,.12); background:#fff; cursor:pointer; font-size:14px; }
+    .btn.primary { background:#0ea5e9; color:#fff; border-color:#0ea5e9; }
+
+    /* Signature preview styles (email-safe portion mirrors exported HTML) */
+    .sig-card { background: var(--brand-bg); border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,.08); overflow:hidden; border:1px solid rgba(0,0,0,.06); }
+    .sig-grid { display:grid; grid-template-columns:6px 1fr; }
+    .accent { width:6px; background: linear-gradient(180deg, var(--grad-top) 0%, var(--grad-bottom) 100%); }
+    .inner { padding:18px 20px; }
+    .name { font-weight:700; font-size:18px; color:#0f172a; margin:0; }
+    .role { font-weight:600; font-size:14px; color:#0ea5e9; margin:2px 0 10px; }
+    .meta { font-size:13px; color:#334155; margin:0; }
+    .meta a { color:#2563eb; text-decoration:none; }
+    .meta a:hover { text-decoration:underline; }
+    .divider { height:1px; margin:14px 0 0; background: linear-gradient(90deg, rgba(15,23,42,.08), rgba(15,23,42,.02)); border:0; }
+    .footer { font-size:11px; color:#475569; line-height:1.45; padding:14px 20px 18px; background:#fbfdff; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+
+    .tips { font-size: 13px; color:#475569; }
+    .muted { color:#64748b; font-size:12px; }
+    .stack { display:flex; flex-wrap:wrap; gap:8px; }
+
+    .toast { position: fixed; bottom: 16px; right: 16px; background:#10b981; color:#fff; padding:10px 12px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,.15); opacity:1; transition: opacity .2s ease; z-index: 9999; }
+    .toast.err { background:#ef4444; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Sofbit – Email Signature Builder</h1>
+    <div class="grid">
+      <div class="panel">
+        <div class="hd">Fields</div>
+        <div class="bd">
+          <div class="row two">
+            <div>
+              <label for="name">Full name</label>
+              <input id="name" type="text" value="Cisco Aravena" />
+            </div>
+            <div>
+              <label for="role">Position / Title</label>
+              <input id="role" type="text" value="Founder" />
+            </div>
+          </div>
+          <div class="row two">
+            <div>
+              <label for="website">Website URL</label>
+              <input id="website" type="url" value="https://sofbit.cl" />
+            </div>
+            <div>
+              <label for="websiteLabel">Website Label (optional)</label>
+              <input id="websiteLabel" type="text" value="sofbit.cl" />
+            </div>
+          </div>
+          <div class="row two">
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" type="text" value="+1 (801) 830-5536" />
+            </div>
+            <div>
+              <label for="logo">Logo URL</label>
+              <input id="logo" type="url" value="https://sofbit.cl/assets/sofbitavatar.png" />
+            </div>
+          </div>
+          <div class="row three">
+            <div>
+              <label for="gradTop">Accent – Gradient Top</label>
+              <input id="gradTop" type="color" value="#00b4d8" />
+            </div>
+            <div>
+              <label for="gradBottom">Accent – Gradient Bottom</label>
+              <input id="gradBottom" type="color" value="#4f46e5" />
+            </div>
+            <div>
+              <label for="brandBg">Card Background</label>
+              <input id="brandBg" type="color" value="#ffffff" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="footer">Footer notice</label>
+              <textarea id="footer" rows="4">Privacy &amp; Confidentiality Notice: This email, including any attachments, may contain confidential and/or proprietary information intended solely for the recipient. If you are not the intended recipient, please notify the sender and delete this message. Any unauthorized review, use, disclosure, or distribution is prohibited. Sofbit may process contact data solely for legitimate business communications and will not sell personal data. For requests related to your data, please contact privacy@sofbit.cl.</textarea>
+            </div>
+          </div>
+          <div class="stack" style="margin-top:10px">
+            <button class="btn primary" id="copyBtn">Copy HTML (Quick Save)</button>
+            <button class="btn" id="downloadBtn">Download .html</button>
+            <a class="btn" href="https://mail.google.com/" target="_blank" rel="noreferrer">Open Gmail</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="hd">Live Preview</div>
+        <div class="bd">
+          <div id="preview" class="sig-card">
+            <div class="sig-grid">
+              <div class="accent"></div>
+              <div class="inner">
+                <table role="presentation" style="border-collapse:collapse;width:100%;">
+                  <tr>
+                    <td style="vertical-align:middle;width:120px;padding-right:14px;">
+                      <img id="p-logo" src="https://sofbit.cl/sofbitavatar.png" alt="Sofbit Logo" width="120" style="display:block;border-radius:10px;height:auto;" />
+                    </td>
+                    <td style="vertical-align:middle;">
+                      <p class="name" id="p-name">Cisco Aravena</p>
+                      <p class="role" id="p-role">Founder</p>
+                      <p class="meta" id="p-meta">
+                        <a id="p-website" href="https://sofbit.cl" target="_blank" rel="noopener">sofbit.cl</a><br />
+                        <span id="p-phone">+1 (801) 830-5536</span>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+                <hr class="divider" />
+                <div class="footer" id="p-footer">
+                  <strong>Privacy &amp; Confidentiality Notice:</strong>
+                  Privacy &amp; Confidentiality Notice: This email, including any attachments, may contain confidential and/or proprietary information intended solely for the recipient. If you are not the intended recipient, please notify the sender and delete this message. Any unauthorized review, use, disclosure, or distribution is prohibited. Sofbit may process contact data solely for legitimate business communications and will not sell personal data. For requests related to your data, please contact privacy@sofbit.cl.
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="muted" style="margin-top:10px">What you see here matches the exported HTML (with fully inline styles) for email client compatibility.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <div class="hd">Raw HTML</div>
+      <div class="bd">
+        <textarea id="raw" class="mono" style="width:100%; min-height:380px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size:12px;"></textarea>
+        <div class="stack" style="margin-top:10px">
+          <button class="btn primary" id="copyBtn2">Copy HTML</button>
+          <button class="btn" id="downloadBtn2">Download .html</button>
+        </div>
+        <p class="tips" style="margin-top:10px">
+          <b>Gmail</b>: Settings → See all settings → General → Signature → Create new → <i>Paste</i> the copied HTML.<br />
+          <b>Outlook Web</b>: Settings → Mail → Compose and reply → Email signature → <i>Paste</i>.<br />
+          <b>Apple Mail</b>: Mail → Settings → Signatures → + → Uncheck “Always match my default message font” → <i>Paste</i>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const els = {
+      name: document.getElementById('name'),
+      role: document.getElementById('role'),
+      website: document.getElementById('website'),
+      websiteLabel: document.getElementById('websiteLabel'),
+      phone: document.getElementById('phone'),
+      logo: document.getElementById('logo'),
+      gradTop: document.getElementById('gradTop'),
+      gradBottom: document.getElementById('gradBottom'),
+      brandBg: document.getElementById('brandBg'),
+      footer: document.getElementById('footer'),
+      raw: document.getElementById('raw'),
+      copyBtn: document.getElementById('copyBtn'),
+      copyBtn2: document.getElementById('copyBtn2'),
+      downloadBtn: document.getElementById('downloadBtn'),
+      downloadBtn2: document.getElementById('downloadBtn2'),
+    };
+
+    const pv = {
+      logo: document.getElementById('p-logo'),
+      name: document.getElementById('p-name'),
+      role: document.getElementById('p-role'),
+      website: document.getElementById('p-website'),
+      phone: document.getElementById('p-phone'),
+      footer: document.getElementById('p-footer'),
+      card: document.getElementById('preview'),
+      accent: document.querySelector('.accent'),
+    };
+
+    const state = {
+      name: els.name.value,
+      role: els.role.value,
+      website: els.website.value,
+      websiteLabel: els.websiteLabel.value,
+      phone: els.phone.value,
+      logo: els.logo.value,
+      gradTop: els.gradTop.value,
+      gradBottom: els.gradBottom.value,
+      brandBg: els.brandBg.value,
+      footer: els.footer.value,
+    };
+
+    function escapeHtml(str) {
+      return str.replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+    }
+
+    function slugify(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    function updatePreview() {
+      pv.logo.src = state.logo;
+      pv.name.textContent = state.name;
+      pv.role.textContent = state.role;
+      pv.website.href = state.website;
+      pv.website.textContent = state.websiteLabel || state.website.replace(/^https?:\/\//, '');
+      pv.phone.textContent = state.phone;
+      pv.footer.innerHTML = '<strong>Privacy &amp; Confidentiality Notice:</strong> ' + state.footer;
+      pv.card.style.setProperty('--brand-bg', state.brandBg);
+      pv.card.querySelector('.sig-grid .accent').style.background = `linear-gradient(180deg, ${state.gradTop} 0%, ${state.gradBottom} 100%)`;
+      els.raw.value = buildExportHtml();
+    }
+
+    function buildExportHtml() {
+      const safe = {
+        name: escapeHtml(state.name),
+        role: escapeHtml(state.role),
+        website: escapeHtml(state.website),
+        websiteLabel: escapeHtml(state.websiteLabel || state.website.replace(/^https?:\/\//, '')),
+        phone: escapeHtml(state.phone),
+        logo: escapeHtml(state.logo),
+        footer: escapeHtml(state.footer),
+        gradTop: escapeHtml(state.gradTop),
+        gradBottom: escapeHtml(state.gradBottom),
+        brandBg: escapeHtml(state.brandBg),
+      };
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sofbit – Email Signature</title>
+</head>
+<body style="margin:0;padding:24px;background:#f5f7fb;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;">
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:${safe.brandBg};border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.08);overflow:hidden;border:1px solid rgba(0,0,0,.06);">
+      <tr>
+        <td style="width:6px;background:linear-gradient(180deg, ${safe.gradTop} 0%, ${safe.gradBottom} 100%);">&nbsp;</td>
+        <td style="padding:18px 20px;">
+          <table role="presentation" style="border-collapse:collapse;width:100%;">
+            <tr>
+              <td style="vertical-align:middle;width:120px;padding-right:14px;">
+                <img src="${safe.logo}" alt="Sofbit Logo" width="120" style="display:block;border-radius:10px;height:auto;"/>
+              </td>
+              <td style="vertical-align:middle;">
+                <p style="font-weight:700;font-size:18px;color:#0f172a;margin:0;">${safe.name}</p>
+                <p style="font-weight:600;font-size:14px;color:#0ea5e9;margin:2px 0 10px;">${safe.role}</p>
+                <p style="font-size:13px;color:#334155;margin:0;">
+                  <a href="${safe.website}" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:none;">${safe.websiteLabel}</a><br/>
+                  <span>${safe.phone}</span>
+                </p>
+              </td>
+            </tr>
+          </table>
+          <hr style="height:1px;margin:14px 0 0;background:linear-gradient(90deg, rgba(15,23,42,.08), rgba(15,23,42,.02));border:0;"/>
+          <div style="font-size:11px;color:#475569;line-height:1.45;padding:14px 20px 18px;background:#fbfdff;">
+            <strong>Privacy &amp; Confidentiality Notice:</strong> ${safe.footer}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>`;
+    }
+
+    function copyHtml() {
+      const html = buildExportHtml();
+      if (navigator.clipboard && window.ClipboardItem) {
+        const blob = new Blob([html], { type: 'text/html' });
+        const item = new ClipboardItem({ 'text/html': blob });
+        navigator.clipboard.write([item]).then(() => toast('Signature HTML copied'), () => fallback());
+      } else {
+        fallback();
+      }
+      function fallback(){
+        navigator.clipboard.writeText(html).then(() => toast('Signature HTML copied as text'), () => toast('Could not copy', true));
+      }
+    }
+
+    function downloadHtml() {
+      const html = buildExportHtml();
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sofbit-signature-${slugify(state.name)}.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function toast(msg, err){
+      const el = document.createElement('div');
+      el.className = 'toast' + (err ? ' err' : '');
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(()=>{ el.style.opacity = '0'; setTimeout(()=> el.remove(), 250); }, 1600);
+    }
+
+    // Bind inputs
+    for (const key of Object.keys(state)) {
+      const input = els[key];
+      if (!input) continue;
+      input.addEventListener('input', () => {
+        state[key] = input.value;
+        updatePreview();
+      });
+    }
+
+    els.copyBtn.addEventListener('click', copyHtml);
+    els.copyBtn2.addEventListener('click', copyHtml);
+    els.downloadBtn.addEventListener('click', downloadHtml);
+    els.downloadBtn2.addEventListener('click', downloadHtml);
+
+    // Initialize
+    updatePreview();
+  </script>
+</body>
+</html>
